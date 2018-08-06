@@ -117,3 +117,29 @@ STA $0284
 
 LDA  TIM64T  
 STA $0296
+
+START:                                                                                                             
+       JMP    StartGame
+
+PrintDisplay:                                                                                                             
+       STA    HMCLR               ; Clear horzontal motion.                                                  ;3    
+       LDA    $86                 ; Position Player00 Sprite To                                              ;3    
+       LDX    #$00                ; the X Coordinate of Object1.                                             ;2    
+       JSR    PosSpriteX                                                                                     ;6    
+                                                                                                                   
+       LDA    $88                 ;Position Player01 Sprite to                                               ;3    
+       LDX    #$01                ;      the X Coordinate of Object2.                                        ;2    
+       JSR    PosSpriteX                                                                                     ;6    
+                                                                                                                   
+       LDA    $8B                 ;Position Ball Strite to                                                   ;3    
+       LDX    #$04                ;      the X Coordinate of the Man.                                        ;2    
+       JSR    PosSpriteX                                                                                     ;6    
+                                                                                                                   
+       STA    WSYNC               ;Wait for horizontal Blank.                                                ;3    
+       STA    HMOVE               ;Apply Horizontal Motion.                                                  ;3    
+       STA    CXCLR               ;Clear Collision Latches.                                                  ;3    
+                                                                                                                   
+       LDA    $8C                 ;Get the Y Coordinate of the Man.                                          ;3    
+       SEC                                                                                                   ;2    
+       SBC    #$04                ;And Adjust it (By Four Scan Lines)                                        ;2    
+       STA    $8D                 ;      for printing (so Y Coordinate Specifies Middle)                     ;3    
